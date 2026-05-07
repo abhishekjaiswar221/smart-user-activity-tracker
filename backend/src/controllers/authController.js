@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import { ENV } from "../lib/env.js";
 
 export async function registerUser(req, res) {
   try {
@@ -32,7 +33,7 @@ export async function registerUser(req, res) {
       {
         id: user._id,
       },
-      process.env.JWT_SECRET,
+      ENV.JWT_SECRET,
     );
 
     return res.status(201).json({
@@ -82,7 +83,7 @@ export async function loginUser(req, res) {
       {
         id: user._id,
       },
-      process.env.JWT_SECRET,
+      ENV.JWT_SECRET,
     );
 
     return res.status(200).json({

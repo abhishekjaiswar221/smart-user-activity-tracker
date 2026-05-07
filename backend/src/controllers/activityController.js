@@ -87,3 +87,53 @@ export async function replayCheck(req, res) {
     });
   }
 }
+
+export async function detectSuspiciousActivity(req, res) {
+  try {
+    const oneMinuteAgo = new Date(Date.now() - 60 * 1000);
+
+    const suspiciousUsers = await ActivityLog.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: oneMinuteAgo,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$userId",
+          totalActions: {
+            $sum: 1,
+          },
+          actions: {
+            $push: "$action",
+          },
+        },
+      },
+      {
+        $match: {
+          totalActions: {
+            $gt: 20,
+          },
+        },
+      },
+      {
+        $sort: {
+          totalActions: -1,
+        },
+      },
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      suspiciousUsers,
+    });
+  } catch (error) {
+    console.log("Error in detectSuspiciousActivity controller", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+}

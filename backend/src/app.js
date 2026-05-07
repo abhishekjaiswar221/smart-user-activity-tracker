@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import path from "path";
 import { ENV } from "./lib/env.js";
+import authRoutes from "./routes/authRoutes.js";
 
 export const app = express();
 
@@ -14,7 +15,7 @@ app.get("/api", (_, res) => {
   res.status(200).json({ message: "Success from Backend API" });
 });
 
-// app.use("/api/chat", chatRoutes);
+app.use("/api/auth", authRoutes);
 
 const __dirname = path.resolve();
 

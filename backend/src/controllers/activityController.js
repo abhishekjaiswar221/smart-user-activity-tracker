@@ -137,3 +137,92 @@ export async function detectSuspiciousActivity(req, res) {
     });
   }
 }
+
+export async function getActivityStats(req, res) {
+  try {
+    const totalActions = await ActivityLog.countDocuments();
+
+    const mostCommonAction = await ActivityLog.aggregate([
+      {
+        $group: {
+          _id: "$action",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: {
+          count: -1,
+        },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
+    const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+
+    const actionsPerMinute = await ActivityLog.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: tenMinutesAgo,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: "%Y-%m-%d %H:%M",
+              date: "$createdAt",
+            },
+          },
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+    ]);
+
+    const mostActiveUser = await ActivityLog.aggregate([
+      {
+        $group: {
+          _id: "$userId",
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $sort: {
+          count: -1,
+        },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        totalActions,
+        mostCommonAction: mostCommonAction[0] || null,
+        actionsPerMinute,
+        mostActiveUser: mostActiveUser[0] || null,
+      },
+    });
+  } catch (error) {
+    console.log("Error in getActivityStats controller", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+}

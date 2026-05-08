@@ -1,0 +1,111 @@
+                          HIGH LEVEL ERP & INVENTORY MANAGEMENT ARCHITECTURE
+                     Paint Manufacturing – Integrated ERP & Inventory Solution
+
+ ┌───────────────────────────────────────────────────────────────────────────────────────────┐
+ │                                   USER ACCESS LAYER                                       │                            │
+ │───────────────────────────────────────────────────────────────────────────────────────────│
+ │  Admins  │ Procurement Team │ Production Team │ Warehouse │ Sales Team │ Finance Team     │                           │
+ └───────────────────────────────────────────────────────────────────────────────────────────┘
+                                             │
+                                             ▼
+
+ ┌───────────────────────────────────────────────────────────────────────────────────────────┐
+ │                                         WEB ERP PORTAL                                    │                             │
+ │───────────────────────────────────────────────────────────────────────────────────────────│
+ │  React / Angular Frontend │ Role Based Access │ Authentication │ Dashboards & Reports     │                           │
+ └───────────────────────────────────────────────────────────────────────────────────────────┘
+                                             │
+                                             ▼
+
+ ┌───────────────────────────────────────────────────────────────────────────────────────────┐
+ │                                 API & APPLICATION LAYER                                   │                             │
+ │───────────────────────────────────────────────────────────────────────────────────────────│
+ │ Authentication Service │ Notification Service │ Workflow Engine │ Reporting APIs          │                           │
+ │ REST APIs │ Business Logic │ Validation │ Audit Logging │ Security Middleware             │                    │
+ └───────────────────────────────────────────────────────────────────────────────────────────┘
+                                             │
+      ┌──────────────────────────────────────┼────────────────────────────────────────┐
+      ▼                                      ▼                                        ▼
+
+┌────────────────────┐         ┌────────────────────┐                    ┌────────────────────┐
+│ PROCUREMENT MODULE │         │ PRODUCTION MODULE  │                    │ SALES MODULE       │
+│────────────────────│         │────────────────────│                    │────────────────────│
+│ Vendor Management  │         │ BOM Management     │                    │ Sales Orders       │
+│ Purchase Indents   │         │ Production Planning│                    │ Invoicing          │
+│ Purchase Orders    │         │ Batch Production   │                    │ Pricing Rules      │
+│ GRN Management     │         │ WIP Tracking       │                    │ Customer Management│
+│ Vendor Performance │         │ Machine Monitoring │                    │ Order Tracking     │
+└────────────────────┘         └────────────────────┘                    └────────────────────┘
+      │                                      │                                       │
+      └──────────────────────┬───────────────┴────────────────────────┬──────────────┘
+                             ▼                                        ▼
+
+                 ┌─────────────────────────────────────────────────┐
+                 │            INVENTORY MANAGEMENT MODULE          │
+                 │─────────────────────────────────────────────────│
+                 │ Raw Material Tracking                           │
+                 │ Finished Goods Tracking                         │
+                 │ Multi-location Warehouse Management             │
+                 │ Batch & Expiry Tracking                         │
+                 │ Stock Transfers                                 │
+                 │ Automated Reorder Alerts                        │
+                 │ Consignment Stock Management                    │
+                 └─────────────────────────────────────────────────┘
+                                             │
+                                             ▼
+
+                             ┌──────────────────────────┐
+                             │ FINANCE & ACCOUNTING     │
+                             │──────────────────────────│
+                             │ General Ledger           │
+                             │ Accounts Payable         │
+                             │ Accounts Receivable      │
+                             │ Cost Tracking            │
+                             │ Taxation & Compliance    │
+                             │ Financial Statements     │
+                             └──────────────────────────┘
+                                             │
+                                             ▼
+
+ ┌───────────────────────────────────────────────────────────────────────────────────────────┐
+ │                                REPORTING & ANALYTICS                                      │                            │
+ │───────────────────────────────────────────────────────────────────────────────────────────│
+ │ KPI Dashboards │ Inventory Turnover │ Profit Margins │ Sales Trends                       │                           │
+ │ Batch-wise Reports │ Compliance Reports │ Forecasting │ Production Analytics              │                            │
+ └───────────────────────────────────────────────────────────────────────────────────────────┘
+                                             │
+                                             ▼
+
+ ┌───────────────────────────────────────────────────────────────────────────────────────────┐
+ │                               CENTRALIZED DATABASE LAYER                                  │                            │
+ │───────────────────────────────────────────────────────────────────────────────────────────│
+ │ PostgreSQL / MongoDB                                                                      │                            │
+ │ Inventory Data │ Production Data │ Financial Data │ Sales Data │ Audit Logs               │                           │
+ └───────────────────────────────────────────────────────────────────────────────────────────┘
+                                             │
+                                             ▼
+
+ ┌───────────────────────────────────────────────────────────────────────────────────────────┐
+ │                             EXTERNAL INTEGRATIONS & SERVICES                              │                            │
+ │───────────────────────────────────────────────────────────────────────────────────────────│
+ │ Tally Integration │ Barcode/RFID Systems │ IoT/Machine Sensors                            │                            │
+ │ Email/SMS Notifications │ Cloud Backup │ BI/Analytics Tools                               │                            │
+ └───────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+ SECURITY CONSIDERATIONS
+ --------------------------------------------------------------------------------------------
+ • JWT Authentication
+ • Role Based Access Control (RBAC)
+ • HTTPS Encryption
+ • Audit Logging
+ • API Validation & Rate Limiting
+
+ SCALABILITY & MODULARITY
+ --------------------------------------------------------------------------------------------
+ • Modular Microservice-Friendly Architecture
+ • Scalable Cloud Deployment
+ • Independent ERP Modules
+ • Centralized APIs
+ • Real-Time Data Processing Support
+ • Future Multi-Plant Expansion Support

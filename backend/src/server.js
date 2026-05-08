@@ -5,6 +5,11 @@ import { ENV } from "./lib/env.js";
 const startServer = async () => {
   try {
     await connectMongoDB();
+
+    if (!ENV.PORT) {
+      throw new Error("PORT is not defined in the .env file.");
+    }
+
     app.listen(ENV.PORT, () =>
       console.log("Server is running on port:", ENV.PORT),
     );

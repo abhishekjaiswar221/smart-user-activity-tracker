@@ -1,6 +1,5 @@
 import cors from "cors";
 import express from "express";
-import path from "path";
 import { ENV } from "./lib/env.js";
 import activityRoutes from "./routes/activityRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -8,6 +7,10 @@ import authRoutes from "./routes/authRoutes.js";
 export const app = express();
 
 app.use(express.json());
+
+if (!ENV.CLIENT_URL) {
+  throw new Error("CLIENT_URL is not defined in the .env file.");
+}
 
 app.use(
   cors({

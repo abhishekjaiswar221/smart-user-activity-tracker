@@ -2,26 +2,26 @@
                      Paint Manufacturing – Integrated ERP & Inventory Solution
 
  ┌───────────────────────────────────────────────────────────────────────────────────────────┐
- │                                   USER ACCESS LAYER                                       │                            │
+ │                                   USER ACCESS LAYER                                       │                            
  │───────────────────────────────────────────────────────────────────────────────────────────│
- │  Admins  │ Procurement Team │ Production Team │ Warehouse │ Sales Team │ Finance Team     │                           │
+ │  Admins  │ Procurement Team │ Production Team │ Warehouse │ Sales Team │ Finance Team     │                           
  └───────────────────────────────────────────────────────────────────────────────────────────┘
                                              │
                                              ▼
 
  ┌───────────────────────────────────────────────────────────────────────────────────────────┐
- │                                         WEB ERP PORTAL                                    │                             │
+ │                                         WEB ERP PORTAL                                    │                             
  │───────────────────────────────────────────────────────────────────────────────────────────│
- │  React / Angular Frontend │ Role Based Access │ Authentication │ Dashboards & Reports     │                           │
+ │  React / Angular Frontend │ Role Based Access │ Authentication │ Dashboards & Reports     │                           
  └───────────────────────────────────────────────────────────────────────────────────────────┘
                                              │
                                              ▼
 
  ┌───────────────────────────────────────────────────────────────────────────────────────────┐
- │                                 API & APPLICATION LAYER                                   │                             │
+ │                                 API & APPLICATION LAYER                                   │                             
  │───────────────────────────────────────────────────────────────────────────────────────────│
- │ Authentication Service │ Notification Service │ Workflow Engine │ Reporting APIs          │                           │
- │ REST APIs │ Business Logic │ Validation │ Audit Logging │ Security Middleware             │                    │
+ │ Authentication Service │ Notification Service │ Workflow Engine │ Reporting APIs          │                           
+ │ REST APIs │ Business Logic │ Validation │ Audit Logging │ Security Middleware             │                    
  └───────────────────────────────────────────────────────────────────────────────────────────┘
                                              │
       ┌──────────────────────────────────────┼────────────────────────────────────────┐
@@ -68,28 +68,28 @@
                                              ▼
 
  ┌───────────────────────────────────────────────────────────────────────────────────────────┐
- │                                REPORTING & ANALYTICS                                      │                            │
+ │                                REPORTING & ANALYTICS                                      │                            
  │───────────────────────────────────────────────────────────────────────────────────────────│
- │ KPI Dashboards │ Inventory Turnover │ Profit Margins │ Sales Trends                       │                           │
- │ Batch-wise Reports │ Compliance Reports │ Forecasting │ Production Analytics              │                            │
+ │ KPI Dashboards │ Inventory Turnover │ Profit Margins │ Sales Trends                       │                           
+ │ Batch-wise Reports │ Compliance Reports │ Forecasting │ Production Analytics              │                            
  └───────────────────────────────────────────────────────────────────────────────────────────┘
                                              │
                                              ▼
 
  ┌───────────────────────────────────────────────────────────────────────────────────────────┐
- │                               CENTRALIZED DATABASE LAYER                                  │                            │
+ │                               CENTRALIZED DATABASE LAYER                                  │                            
  │───────────────────────────────────────────────────────────────────────────────────────────│
- │ PostgreSQL / MongoDB                                                                      │                            │
- │ Inventory Data │ Production Data │ Financial Data │ Sales Data │ Audit Logs               │                           │
+ │ PostgreSQL / MongoDB                                                                      │                            
+ │ Inventory Data │ Production Data │ Financial Data │ Sales Data │ Audit Logs               │                           
  └───────────────────────────────────────────────────────────────────────────────────────────┘
                                              │
                                              ▼
 
  ┌───────────────────────────────────────────────────────────────────────────────────────────┐
- │                             EXTERNAL INTEGRATIONS & SERVICES                              │                            │
+ │                             EXTERNAL INTEGRATIONS & SERVICES                              │                            
  │───────────────────────────────────────────────────────────────────────────────────────────│
- │ Tally Integration │ Barcode/RFID Systems │ IoT/Machine Sensors                            │                            │
- │ Email/SMS Notifications │ Cloud Backup │ BI/Analytics Tools                               │                            │
+ │ Tally Integration │ Barcode/RFID Systems │ IoT/Machine Sensors                            │                            
+ │ Email/SMS Notifications │ Cloud Backup │ BI/Analytics Tools                               │                            
  └───────────────────────────────────────────────────────────────────────────────────────────┘
 
 

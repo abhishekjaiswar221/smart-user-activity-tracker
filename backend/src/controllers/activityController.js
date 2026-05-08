@@ -92,7 +92,7 @@ export async function detectSuspiciousActivity(req, res) {
   try {
     const oneMinuteAgo = new Date(Date.now() - 60 * 1000);
 
-    const suspiciousUsers = await ActivityLog.aggregate([
+    const highFrequencyUsers = await ActivityLog.aggregate([
       {
         $match: {
           createdAt: {
@@ -103,27 +103,72 @@ export async function detectSuspiciousActivity(req, res) {
       {
         $group: {
           _id: "$userId",
-          totalActions: {
+          count: {
             $sum: 1,
-          },
-          actions: {
-            $push: "$action",
           },
         },
       },
       {
         $match: {
-          totalActions: {
+          count: {
             $gt: 20,
           },
         },
       },
       {
-        $sort: {
-          totalActions: -1,
+        $project: {
+          _id: 0,
+          userId: "$_id",
+          reason: "High frequency",
+          count: 1,
         },
       },
     ]);
+
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+
+    const multipleIpUsers = await ActivityLog.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: fiveMinutesAgo,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$userId",
+          uniqueIps: {
+            $addToSet: "$ipAddress",
+          },
+        },
+      },
+      {
+        $project: {
+          userId: "$_id",
+          ipCount: {
+            $size: "$uniqueIps",
+          },
+        },
+      },
+      {
+        $match: {
+          ipCount: {
+            $gt: 2,
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          userId: 1,
+          reason: "Multiple IPs",
+          count: "$ipCount",
+        },
+      },
+    ]);
+
+    const suspiciousUsers = [...highFrequencyUsers, ...multipleIpUsers];
 
     return res.status(200).json({
       success: true,

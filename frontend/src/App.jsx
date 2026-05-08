@@ -3,6 +3,7 @@ import AppLayout from "./layouts/AppLayout";
 import AuthLayout from "./layouts/AuthLayout";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import Dashboard from "./pages/Dashboard";
 
 const routes = createBrowserRouter([
   {
@@ -21,34 +22,17 @@ const routes = createBrowserRouter([
   {
     Component: AppLayout,
     children: [
-      // {
-      //   path: "dashboard",
-      //   Component: Dashboard,
-      // },
-      // {
-      //   path: "problems",
-      //   Component: Problems,
-      // },
-      // {
-      //   path: "problem/:id",
-      //   Component: Problem,
-      // },
-      // {
-      //   path: "session/:id",
-      //   Component: Session,
-      // },
+      {
+        path: "dashboard",
+        Component: Dashboard,
+      },
     ],
   },
 ]);
 
 const App = () => {
-  // const { isLoaded } = useUser();
-
-  // if (!isLoaded) return <Loader />;
-
   return (
     <>
-      {/* <Toaster toastOptions={{ duration: 2000 }} /> */}
       <RouterProvider router={routes} />
     </>
   );

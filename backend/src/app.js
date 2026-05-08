@@ -9,7 +9,12 @@ export const app = express();
 
 app.use(express.json());
 
-app.use(cors({ origin: "*", credentials: true }));
+app.use(
+  cors({
+    origin: ENV.CLIENT_URL,
+    credentials: true,
+  }),
+);
 
 app.get("/api", (_, res) => {
   res.status(200).json({ message: "Success from Backend API" });

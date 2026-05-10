@@ -9,11 +9,12 @@ export async function registerUser(req, res) {
 
     if (!email || !password) {
       return res.status(400).json({
+        success: false,
         message: "Email and password are required",
       });
     }
 
-    const data = await registerUserService({
+    const result = await registerUserService({
       name,
       email,
       password,
@@ -21,12 +22,14 @@ export async function registerUser(req, res) {
 
     return res.status(201).json({
       success: true,
-      ...data,
+      message: "User registered successfully",
+      data: result,
     });
   } catch (error) {
     console.error("Error in registerUser controller:", error);
 
     return res.status(400).json({
+      success: false,
       message: error.message,
     });
   }
@@ -38,23 +41,26 @@ export async function loginUser(req, res) {
 
     if (!email || !password) {
       return res.status(400).json({
+        success: false,
         message: "Email and password are required",
       });
     }
 
-    const data = await loginUserService({
+    const result = await loginUserService({
       email,
       password,
     });
 
     return res.status(200).json({
       success: true,
-      ...data,
+      message: "User logged in successfully",
+      data: result,
     });
   } catch (error) {
     console.error("Error in loginUser controller:", error);
 
     return res.status(401).json({
+      success: false,
       message: error.message,
     });
   }

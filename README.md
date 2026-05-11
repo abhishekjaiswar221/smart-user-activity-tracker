@@ -47,6 +47,8 @@ Detects:
 - Login/Register pages
 - Dashboard UI
 - Suspicious activity table
+- Loading & error states
+- Responsive design
 
 ---
 
@@ -70,44 +72,22 @@ Detects:
 
 ---
 
-# Folder Structure
-
-```bash
-project/
-│
-├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── lib/
-│   ├── app.js
-│   └── server.js
-│
-├── frontend/
-│   ├── src/
-│   │   ├── api/
-│   │   ├── layouts/
-│   │   ├── pages/
-│   │   ├── main.jsx
-│   │   ├── main.css
-│   │   └── App.jsx
-│
-└── README.md
-```
-
----
-
 # Environment Variables
 
 Create a `.env` file in backend:
 
 ```env
+NODE_ENV=production || development
 PORT=5000
 MONGO_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
-CLIENT_URL=http://localhost:5173
+CLIENT_URL=http://localhost:3000
+```
+
+Create a `.env` file in frontend:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000/api
 ```
 
 ---
@@ -210,4 +190,42 @@ GET /api/activity/stats
 GET /api/activity/suspicious
 ```
 
+<!-- ---
+
+# Security Features
+
+- JWT authentication
+- Replay attack prevention
+- Custom rate limiting
+- Suspicious activity detection
+- IP tracking
+
 ---
+
+# Future Improvements
+
+- Redis-based distributed rate limiting
+- WebSockets for real-time analytics
+- Role-based access control
+- Chart visualizations
+- Docker deployment
+- CI/CD pipelines
+
+---
+
+# Assignment Requirements Covered
+
+- Authentication APIs
+- Activity Logging
+- Replay Protection
+- Analytics APIs
+- Suspicious Activity Detection
+- React Dashboard
+- JWT Middleware
+- MongoDB Aggregations -->
+
+---
+
+# Author
+
+Made with ❤️ by Abhishek Jaiswar

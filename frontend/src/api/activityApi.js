@@ -19,3 +19,21 @@ export const getSuspiciousActivity = async () => {
   });
   return response?.data;
 };
+
+export const replayCheck = async (formData) => {
+  const response = await http.post("/activity/replay-check", formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response?.data;
+};
+
+export const logActivity = async (formData) => {
+  const response = await http.post("/activity", formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response?.data;
+};

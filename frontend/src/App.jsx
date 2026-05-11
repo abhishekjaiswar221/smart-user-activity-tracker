@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import AppLayout from "./layouts/AppLayout";
 import AuthLayout from "./layouts/AuthLayout";
+import ActivitySimulator from "./pages/ActivitySimulator";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Dashboard from "./pages/Dashboard";
@@ -25,6 +26,10 @@ const routes = createBrowserRouter([
       {
         path: "dashboard",
         Component: Dashboard,
+      },
+      {
+        path: "activity",
+        Component: ActivitySimulator,
       },
     ],
   },

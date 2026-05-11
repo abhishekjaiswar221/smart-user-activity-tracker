@@ -13,7 +13,7 @@ const Login = () => {
     try {
       const formData = new FormData(e.target);
       const response = await loginUser(Object.fromEntries(formData));
-      localStorage.setItem("token", response.token);
+      localStorage.setItem("token", response.data?.token);
 
       if (response?.success) {
         navigate("/dashboard");

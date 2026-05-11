@@ -14,7 +14,7 @@ const Register = () => {
     try {
       const formData = new FormData(e.target);
       const response = await registerUser(Object.fromEntries(formData));
-      console.log(response);
+
       if (response?.success) {
         navigate("/login");
       }

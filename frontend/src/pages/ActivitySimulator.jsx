@@ -1,19 +1,16 @@
 import {
-  AlertTriangle,
-  CheckCircle2,
   Clock3,
   MousePointerClick,
   ShieldAlert,
   TimerReset,
 } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { logActivity, replayCheck } from "../api/activityApi";
 
 const actions = ["login", "logout", "view", "click", "custom"];
 
 const ActivitySimulator = () => {
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const [serverTime, setServerTime] = useState("");
   const [clientTime, setClientTime] = useState("");
   const [timeDifference, setTimeDifference] = useState(0);
@@ -32,7 +29,7 @@ const ActivitySimulator = () => {
       });
 
       if (!replayCheckRes?.data?.allowed) {
-        setError("Replay detected");
+        toast.error("Replay detected");
         return;
       }
 
@@ -52,19 +49,21 @@ const ActivitySimulator = () => {
       setTimeDifference(timeDiff);
       setServerTime(logActivityRes?.data?.serverTime);
       setActionsInLast10Sec(logActivityRes?.data?.actionsInLast10Sec);
-      setMessage(`${action.toUpperCase()} logged successfully`);
+      toast.success(
+        `${action.charAt(0).toUpperCase() + action.slice(1)} logged successfully`,
+      );
     } catch (error) {
       console.error("Error", error);
 
       if (error?.response?.status === 429) {
-        setError("Rate limit exceeded. Buttons are disabled for 10 seconds");
+        toast.error("Rate limit exceeded. Buttons are disabled for 10 seconds");
         setButtonsDisabled(true);
 
         setTimeout(() => {
           setButtonsDisabled(false);
         }, 10000);
       } else {
-        setError(error?.response?.data?.message);
+        toast.error(error?.response?.data?.message);
       }
     }
   };
@@ -121,24 +120,6 @@ const ActivitySimulator = () => {
             </div>
           )}
         </div>
-
-        {/* Success Message */}
-        {message && (
-          <div className="bg-green-500/10 border border-green-500/30 text-green-400 rounded-2xl p-5 mb-6 flex items-center gap-3">
-            <CheckCircle2 className="w-6 h-6" />
-
-            <p>{message}</p>
-          </div>
-        )}
-
-        {/* Error Message */}
-        {error && (
-          <div className="bg-red-500/10 border border-red-500/30 text-red-400 rounded-2xl p-5 mb-6 flex items-center gap-3">
-            <AlertTriangle className="w-6 h-6" />
-
-            <p>{error}</p>
-          </div>
-        )}
 
         {/* Analytics Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

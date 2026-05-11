@@ -7,6 +7,7 @@ import Register from "./pages/auth/Register";
 import Dashboard from "./pages/Dashboard";
 import SuspiciousUsers from "./pages/SuspiciousUsers";
 import Stats from "./pages/Stats";
+import { Toaster } from "react-hot-toast";
 
 const routes = createBrowserRouter([
   {
@@ -48,6 +49,7 @@ const routes = createBrowserRouter([
 const App = () => {
   return (
     <>
+      <Toaster position="top-right" reverseOrder={false} />
       <RouterProvider router={routes} />
     </>
   );

@@ -5,6 +5,8 @@ import ActivitySimulator from "./pages/ActivitySimulator";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Dashboard from "./pages/Dashboard";
+import SuspiciousUsers from "./pages/SuspiciousUsers";
+import Stats from "./pages/Stats";
 
 const routes = createBrowserRouter([
   {
@@ -30,6 +32,14 @@ const routes = createBrowserRouter([
       {
         path: "activity",
         Component: ActivitySimulator,
+      },
+      {
+        path: "stats",
+        Component: Stats,
+      },
+      {
+        path: "suspicious",
+        Component: SuspiciousUsers,
       },
     ],
   },

@@ -32,7 +32,7 @@ export async function replayCheckService({ action, clientTime, userId }) {
   const diff = Math.abs(Date.now() - timeOfClient.getTime()) / 1000;
 
   if (diff > 30) {
-    throw new Error("Replay request rejected: request expired");
+    throw new Error("Replay request rejected: Request expired");
   }
 
   const threeSecondsAgo = new Date(Date.now() - 3000);
@@ -44,7 +44,7 @@ export async function replayCheckService({ action, clientTime, userId }) {
   });
 
   if (existingAction) {
-    throw new Error("Replay request rejected: duplicate action detected");
+    throw new Error("Replay request rejected: Duplicate action detected");
   }
 
   return {

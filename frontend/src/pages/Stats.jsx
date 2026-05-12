@@ -1,13 +1,34 @@
-import {
-  Activity,
-  BarChart3,
-  Clock3,
-  RefreshCcw,
-  TrendingUp,
-  UserCircle2,
-} from "lucide-react";
+import { Activity, Clock3, TrendingUp, UserCircle2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { fetchStats } from "../api/activityApi";
 
 const Stats = () => {
+  const [stats, setStats] = useState({});
+
+  useEffect(() => {
+    const fetchStatsData = async () => {
+      try {
+        const response = await fetchStats();
+        setStats(response?.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchStatsData();
+  }, []);
+
+  const actionsPerMinute = stats?.actionsPerMinute || [];
+
+  const totalActions = actionsPerMinute.reduce(
+    (sum, item) => sum + item.count,
+    0,
+  );
+
+  const avgActionsPerMinute =
+    actionsPerMinute.length > 0
+      ? (totalActions / actionsPerMinute.length).toFixed(1)
+      : 0;
+
   return (
     <div className="min-h-screen bg-gray-950 text-white p-8">
       {/* Header */}
@@ -20,14 +41,14 @@ const Stats = () => {
           </p>
         </div>
 
-        <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-5 py-3 rounded-xl transition">
+        {/* <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-5 py-3 rounded-xl transition">
           <RefreshCcw className="w-5 h-5" />
           Refresh Stats
-        </button>
+        </button> */}
       </div>
 
       {/* Top Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6 mb-10">
         {/* Total Actions */}
         <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6">
           <div className="flex items-center justify-between mb-5">
@@ -40,7 +61,7 @@ const Stats = () => {
 
           <p className="text-gray-400 text-sm">Total Actions</p>
 
-          <h2 className="text-4xl font-bold mt-2">12,840</h2>
+          <h2 className="text-4xl font-bold mt-2">{stats?.totalActions}</h2>
         </div>
 
         {/* Most Common Action */}
@@ -55,7 +76,10 @@ const Stats = () => {
 
           <p className="text-gray-400 text-sm">Most Common Action</p>
 
-          <h2 className="text-4xl font-bold mt-2">CLICK</h2>
+          <h2 className="text-4xl font-bold mt-2">
+            {stats?.mostCommonAction?._id.charAt(0).toUpperCase() +
+              stats?.mostCommonAction?._id.slice(1)}
+          </h2>
         </div>
 
         {/* Most Active User */}
@@ -70,7 +94,9 @@ const Stats = () => {
 
           <p className="text-gray-400 text-sm">Most Active User</p>
 
-          <h2 className="text-3xl font-bold mt-2">John Doe</h2>
+          <h2 className="text-3xl font-bold mt-2">
+            {stats?.mostActiveUser?._id.slice(0, 20) + "..."}
+          </h2>
         </div>
 
         {/* Avg Requests */}
@@ -85,13 +111,13 @@ const Stats = () => {
 
           <p className="text-gray-400 text-sm">Avg Actions / Min</p>
 
-          <h2 className="text-4xl font-bold mt-2">128</h2>
+          <h2 className="text-4xl font-bold mt-2">{avgActionsPerMinute}</h2>
         </div>
       </div>
 
       {/* Main Analytics */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-10">
-        {/* Chart */}
+      {/* <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-10">
+        Chart
         <div className="xl:col-span-2 bg-gray-900 border border-gray-800 rounded-3xl p-8">
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -108,8 +134,7 @@ const Stats = () => {
               Auto Refresh: 5s
             </div>
           </div>
-
-          {/* Fake Chart */}
+          Fake Chart
           <div className="h-80 bg-gray-800 border border-gray-700 rounded-2xl flex items-end justify-between px-6 py-6">
             <div className="flex flex-col items-center gap-3">
               <div className="w-10 h-24 bg-indigo-500 rounded-t-lg"></div>
@@ -172,10 +197,9 @@ const Stats = () => {
             </div>
           </div>
         </div>
-
-        {/* Right Side */}
+         Right Side
         <div className="space-y-6">
-          {/* Live Summary */}
+          Live Summary
           <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6">
             <div className="flex items-center gap-3 mb-6">
               <BarChart3 className="w-6 h-6 text-indigo-400" />
@@ -209,8 +233,7 @@ const Stats = () => {
               </div>
             </div>
           </div>
-
-          {/* System Status */}
+          System Status
           <div className="bg-gradient-to-r from-indigo-600/10 to-purple-600/10 border border-indigo-500/30 rounded-3xl p-6">
             <h2 className="text-2xl font-semibold mb-5">System Status</h2>
 
@@ -240,11 +263,11 @@ const Stats = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div> 
+      </div> */}
 
       {/* Recent Insights */}
-      <div className="bg-gray-900 border border-gray-800 rounded-3xl p-8">
+      {/* <div className="bg-gray-900 border border-gray-800 rounded-3xl p-8">
         <h2 className="text-2xl font-semibold mb-8">Recent Insights</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -266,7 +289,7 @@ const Stats = () => {
             <h3 className="text-3xl font-bold">42</h3>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

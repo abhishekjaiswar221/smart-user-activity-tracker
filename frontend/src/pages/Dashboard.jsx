@@ -1,8 +1,24 @@
 import { Activity, AlertTriangle, BarChart3, Clock3 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { fetchStats } from "../api/activityApi";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+
+  const [stats, setStats] = useState({});
+
+  useEffect(() => {
+    const fetchStatsData = async () => {
+      try {
+        const response = await fetchStats();
+        setStats(response?.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchStatsData();
+  }, []);
 
   const cards = [
     {
@@ -46,7 +62,9 @@ const Dashboard = () => {
               <div>
                 <p className="text-gray-400 text-sm">Total Actions</p>
 
-                <h3 className="text-3xl font-bold mt-2">1,284</h3>
+                <h3 className="text-3xl font-bold mt-2">
+                  {stats?.totalActions}
+                </h3>
               </div>
 
               <div className="bg-indigo-600/20 p-3 rounded-xl">

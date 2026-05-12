@@ -1,5 +1,6 @@
 import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { registerUser } from "../../api/authApi";
 
@@ -18,8 +19,10 @@ const Register = () => {
       if (response?.success) {
         navigate("/login");
       }
+      toast.success("User registered in successfully!");
     } catch (error) {
       console.error("Error in registering user", error);
+      toast.error("Error in registering user!");
     }
   };
 
@@ -103,7 +106,10 @@ const Register = () => {
 
         <p className="text-center text-gray-400 text-sm mt-6">
           Already have an account?{" "}
-          <span className="text-indigo-400 hover:text-indigo-300 cursor-pointer">
+          <span
+            onClick={() => navigate("/login")}
+            className="text-indigo-400 hover:text-indigo-300 cursor-pointer"
+          >
             Sign In
           </span>
         </p>

@@ -1,5 +1,6 @@
 import { Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { loginUser } from "../../api/authApi";
 
@@ -18,8 +19,11 @@ const Login = () => {
       if (response?.success) {
         navigate("/dashboard");
       }
+
+      toast.success("User logged in successfully!");
     } catch (error) {
       console.error("Error logging in", error);
+      toast.error("Error logging in user!");
     }
   };
 
@@ -91,7 +95,10 @@ const Login = () => {
         {/* Footer */}
         <p className="text-center text-gray-400 text-sm mt-6">
           Don&apos;t have an account?{" "}
-          <span className="text-indigo-400 hover:text-indigo-300 cursor-pointer">
+          <span
+            onClick={() => navigate("/")}
+            className="text-indigo-400 hover:text-indigo-300 cursor-pointer"
+          >
             Sign Up
           </span>
         </p>

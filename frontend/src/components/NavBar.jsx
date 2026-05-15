@@ -1,12 +1,23 @@
 import { LogOut, ShieldCheck, UserCircle2 } from "lucide-react";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
+import { logoutUser } from "../api/authApi";
 
 const NavBar = () => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      const response = await logoutUser();
+
+      if (response?.success) {
+        navigate("/login");
+        toast.success("User logged out successfully!");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error logging out!");
+    }
   };
 
   return (

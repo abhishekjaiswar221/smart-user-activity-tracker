@@ -3,6 +3,13 @@ import {
   registerUserService,
 } from "../services/authService.js";
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+};
+
 export async function registerUser(req, res) {
   try {
     const { name, email, password } = req.body;
@@ -20,10 +27,13 @@ export async function registerUser(req, res) {
       password,
     });
 
+    // Set cookie
+    res.cookie("token", result.token, cookieOptions);
+
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
-      data: result,
+      user: result.user,
     });
   } catch (error) {
     console.error("Error in registerUser controller:", error);
@@ -51,10 +61,13 @@ export async function loginUser(req, res) {
       password,
     });
 
+    // Set JWT in cookie
+    res.cookie("token", result.token, cookieOptions);
+
     return res.status(200).json({
       success: true,
       message: "User logged in successfully",
-      data: result,
+      user: result.user,
     });
   } catch (error) {
     console.error("Error in loginUser controller:", error);

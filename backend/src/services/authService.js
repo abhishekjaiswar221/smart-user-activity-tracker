@@ -23,6 +23,9 @@ export async function registerUserService({ name, email, password }) {
       id: user._id,
     },
     ENV.JWT_SECRET,
+    {
+      expiresIn: "7d",
+    },
   );
 
   return {
@@ -53,6 +56,9 @@ export async function loginUserService({ email, password }) {
       id: user._id,
     },
     ENV.JWT_SECRET,
+    {
+      expiresIn: "7d",
+    },
   );
 
   return {

@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import path from "path";
@@ -8,6 +9,7 @@ import authRoutes from "./routes/authRoutes.js";
 export const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 if (!ENV.CLIENT_URL) {
   throw new Error("CLIENT_URL is not defined in the .env file.");

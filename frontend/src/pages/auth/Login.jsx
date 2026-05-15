@@ -14,13 +14,11 @@ const Login = () => {
     try {
       const formData = new FormData(e.target);
       const response = await loginUser(Object.fromEntries(formData));
-      localStorage.setItem("token", response.data?.token);
 
       if (response?.success) {
         navigate("/dashboard");
+        toast.success("User logged in successfully!");
       }
-
-      toast.success("User logged in successfully!");
     } catch (error) {
       console.error("Error logging in", error);
       toast.error("Error logging in user!");

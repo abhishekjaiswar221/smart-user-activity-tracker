@@ -3,20 +3,35 @@ import { useEffect, useState } from "react";
 import { getSuspiciousActivity } from "../api/activityApi";
 
 const SuspiciousUsers = () => {
-  const [suspiciousUser, setSuspiciousUser] = useState({});
-  console.log(suspiciousUser);
+  const [suspiciousUsers, setSuspiciousUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [lastScan, setLastScan] = useState(null);
 
   useEffect(() => {
     const fetchSuspiciousUsers = async () => {
       try {
+        setLoading(true);
         const response = await getSuspiciousActivity();
-        setSuspiciousUser(response);
-      } catch (error) {
-        console.error(error);
+        setSuspiciousUsers(response?.data?.suspiciousUsers || []);
+        setLastScan(new Date());
+        setError(null);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load suspicious activity");
+      } finally {
+        setLoading(false);
       }
     };
     fetchSuspiciousUsers();
   }, []);
+
+  const highFrequencyCount = suspiciousUsers.filter(
+    (user) => user.reason === "High frequency",
+  ).length;
+  const multipleIpCount = suspiciousUsers.filter(
+    (user) => user.reason === "Multiple IPs",
+  ).length;
 
   return (
     <div className="min-h-screen bg-gray-950 text-white p-8">
@@ -49,7 +64,7 @@ const SuspiciousUsers = () => {
 
           <p className="text-gray-400 text-sm">Suspicious Users</p>
 
-          <h2 className="text-4xl font-bold mt-2">12</h2>
+          <h2 className="text-4xl font-bold mt-2">{suspiciousUsers.length}</h2>
         </div>
 
         {/* High Frequency */}
@@ -64,7 +79,7 @@ const SuspiciousUsers = () => {
 
           <p className="text-gray-400 text-sm">High Request Users</p>
 
-          <h2 className="text-4xl font-bold mt-2">7</h2>
+          <h2 className="text-4xl font-bold mt-2">{highFrequencyCount}</h2>
         </div>
 
         {/* Multiple IPs */}
@@ -79,7 +94,7 @@ const SuspiciousUsers = () => {
 
           <p className="text-gray-400 text-sm">Multiple IP Users</p>
 
-          <h2 className="text-4xl font-bold mt-2">5</h2>
+          <h2 className="text-4xl font-bold mt-2">{multipleIpCount}</h2>
         </div>
 
         {/* Last Scan */}
@@ -94,8 +109,55 @@ const SuspiciousUsers = () => {
 
           <p className="text-gray-400 text-sm">Last Detection Scan</p>
 
-          <h2 className="text-2xl font-bold mt-2">2 sec ago</h2>
+          <h2 className="text-2xl font-bold mt-2">
+            {lastScan ? lastScan.toLocaleTimeString() : "—"}
+          </h2>
         </div>
+      </div>
+
+      {/* Flagged Users */}
+      <div className="bg-gray-900 border border-gray-800 rounded-3xl p-6">
+        <h3 className="text-xl font-semibold mb-4">Flagged Users</h3>
+
+        {loading ? (
+          <p className="text-gray-400">Scanning activity logs...</p>
+        ) : error ? (
+          <p className="text-red-400">{error}</p>
+        ) : suspiciousUsers.length === 0 ? (
+          <p className="text-gray-400">No suspicious activity detected.</p>
+        ) : (
+          <table className="w-full text-left">
+            <thead>
+              <tr className="text-gray-400 text-sm border-b border-gray-800">
+                <th className="py-3">User ID</th>
+                <th className="py-3">Reason</th>
+                <th className="py-3">Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {suspiciousUsers.map((user, index) => (
+                <tr
+                  key={`${user.userId}-${user.reason}-${index}`}
+                  className="border-b border-gray-800/50"
+                >
+                  <td className="py-3 font-mono text-sm">{user.userId}</td>
+                  <td className="py-3">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs ${
+                        user.reason === "High frequency"
+                          ? "bg-yellow-600/20 text-yellow-400"
+                          : "bg-blue-600/20 text-blue-400"
+                      }`}
+                    >
+                      {user.reason}
+                    </span>
+                  </td>
+                  <td className="py-3">{user.count}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

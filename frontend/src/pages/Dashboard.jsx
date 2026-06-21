@@ -6,15 +6,22 @@ import { fetchStats } from "../api/activityApi";
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  const [stats, setStats] = useState({});
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchStatsData = async () => {
       try {
+        setLoading(true);
         const response = await fetchStats();
-        setStats(response?.data);
-      } catch (error) {
-        console.error(error);
+        setStats(response?.data || null);
+        setError(null);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load dashboard stats");
+      } finally {
+        setLoading(false);
       }
     };
     fetchStatsData();
@@ -56,51 +63,57 @@ const Dashboard = () => {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">Total Actions</p>
+        {loading ? (
+          <p className="text-gray-400 mb-10">Loading dashboard stats...</p>
+        ) : error ? (
+          <p className="text-red-400 mb-10">{error}</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-400 text-sm">Total Actions</p>
 
-                <h3 className="text-3xl font-bold mt-2">
-                  {stats?.totalActions}
-                </h3>
+                  <h3 className="text-3xl font-bold mt-2">
+                    {stats?.totalActions ?? 0}
+                  </h3>
+                </div>
+
+                <div className="bg-indigo-600/20 p-3 rounded-xl">
+                  <Activity className="text-indigo-400 w-7 h-7" />
+                </div>
               </div>
+            </div>
 
-              <div className="bg-indigo-600/20 p-3 rounded-xl">
-                <Activity className="text-indigo-400 w-7 h-7" />
+            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-400 text-sm">Active Sessions</p>
+
+                  <h3 className="text-3xl font-bold mt-2">24</h3>
+                </div>
+
+                <div className="bg-green-600/20 p-3 rounded-xl">
+                  <Clock3 className="text-green-400 w-7 h-7" />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-400 text-sm">Suspicious Users</p>
+
+                  <h3 className="text-3xl font-bold mt-2">3</h3>
+                </div>
+
+                <div className="bg-red-600/20 p-3 rounded-xl">
+                  <AlertTriangle className="text-red-400 w-7 h-7" />
+                </div>
               </div>
             </div>
           </div>
-
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">Active Sessions</p>
-
-                <h3 className="text-3xl font-bold mt-2">24</h3>
-              </div>
-
-              <div className="bg-green-600/20 p-3 rounded-xl">
-                <Clock3 className="text-green-400 w-7 h-7" />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">Suspicious Users</p>
-
-                <h3 className="text-3xl font-bold mt-2">3</h3>
-              </div>
-
-              <div className="bg-red-600/20 p-3 rounded-xl">
-                <AlertTriangle className="text-red-400 w-7 h-7" />
-              </div>
-            </div>
-          </div>
-        </div>
+        )}
 
         {/* Feature Cards */}
         <div>

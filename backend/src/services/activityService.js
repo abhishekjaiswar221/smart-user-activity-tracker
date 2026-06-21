@@ -166,6 +166,12 @@ export async function detectSuspiciousActivityService() {
 export async function getActivityStatsService() {
   const totalActions = await ActivityLog.countDocuments();
 
+  const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+
+  const activeUsers = await ActivityLog.distinct("userId", {
+    createdAt: { $gte: fiveMinutesAgo },
+  });
+
   const mostCommonAction = await ActivityLog.aggregate([
     {
       $group: {
@@ -234,6 +240,7 @@ export async function getActivityStatsService() {
 
   return {
     totalActions,
+    activeUsers: activeUsers.length,
     mostCommonAction: mostCommonAction[0] || null,
     actionsPerMinute,
     mostActiveUser: mostActiveUser[0] || null,

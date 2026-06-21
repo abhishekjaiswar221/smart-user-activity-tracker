@@ -1,21 +1,28 @@
 import { Activity, AlertTriangle, BarChart3, Clock3 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { fetchStats } from "../api/activityApi";
+import { fetchStats, getSuspiciousActivity } from "../api/activityApi";
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
   const [stats, setStats] = useState(null);
+  const [suspiciousCount, setSuspiciousCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchStatsData = async () => {
+    const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        const response = await fetchStats();
-        setStats(response?.data || null);
+        const [statsResponse, suspiciousResponse] = await Promise.all([
+          fetchStats(),
+          getSuspiciousActivity(),
+        ]);
+        setStats(statsResponse?.data || null);
+        setSuspiciousCount(
+          suspiciousResponse?.data?.suspiciousUsers?.length || 0,
+        );
         setError(null);
       } catch (err) {
         console.error(err);
@@ -24,7 +31,7 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
-    fetchStatsData();
+    fetchDashboardData();
   }, []);
 
   const cards = [
@@ -88,9 +95,11 @@ const Dashboard = () => {
             <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-400 text-sm">Active Sessions</p>
+                  <p className="text-gray-400 text-sm">Active Users (5m)</p>
 
-                  <h3 className="text-3xl font-bold mt-2">24</h3>
+                  <h3 className="text-3xl font-bold mt-2">
+                    {stats?.activeUsers ?? 0}
+                  </h3>
                 </div>
 
                 <div className="bg-green-600/20 p-3 rounded-xl">
@@ -104,7 +113,9 @@ const Dashboard = () => {
                 <div>
                   <p className="text-gray-400 text-sm">Suspicious Users</p>
 
-                  <h3 className="text-3xl font-bold mt-2">3</h3>
+                  <h3 className="text-3xl font-bold mt-2">
+                    {suspiciousCount}
+                  </h3>
                 </div>
 
                 <div className="bg-red-600/20 p-3 rounded-xl">

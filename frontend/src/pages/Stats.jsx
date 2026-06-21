@@ -100,8 +100,6 @@ const Stats = () => {
               <div className="bg-indigo-600/20 p-3 rounded-2xl">
                 <Activity className="w-7 h-7 text-indigo-400" />
               </div>
-
-              <span className="text-xs text-green-400">+12%</span>
             </div>
 
             <p className="text-gray-400 text-sm">Total Actions</p>

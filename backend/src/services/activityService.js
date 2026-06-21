@@ -236,6 +236,25 @@ export async function getActivityStatsService() {
     {
       $limit: 1,
     },
+    {
+      $lookup: {
+        from: "users",
+        localField: "_id",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    {
+      $unwind: "$user",
+    },
+    {
+      $project: {
+        _id: 1,
+        count: 1,
+        name: "$user.name",
+        email: "$user.email",
+      },
+    },
   ]);
 
   return {

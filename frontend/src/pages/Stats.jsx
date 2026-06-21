@@ -61,9 +61,7 @@ const Stats = () => {
       stats.mostCommonAction._id.slice(1)
     : "No data yet";
 
-  const mostActiveUserLabel = stats?.mostActiveUser?._id
-    ? `${stats.mostActiveUser._id.slice(0, 20)}...`
-    : "No data yet";
+  const mostActiveUserLabel = stats?.mostActiveUser?.name || "No data yet";
 
   return (
     <div className="min-h-screen bg-gray-950 text-white p-8">

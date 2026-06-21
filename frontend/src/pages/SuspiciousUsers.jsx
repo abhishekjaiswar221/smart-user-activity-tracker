@@ -1,4 +1,10 @@
-import { Activity, Clock3, Globe, ShieldAlert } from "lucide-react";
+import {
+  Activity,
+  Clock3,
+  Globe,
+  RefreshCcw,
+  ShieldAlert,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { getSuspiciousActivity } from "../api/activityApi";
 
@@ -26,6 +32,21 @@ const SuspiciousUsers = () => {
     fetchSuspiciousUsers();
   }, []);
 
+  const handleRefresh = async () => {
+    try {
+      setLoading(true);
+      const response = await getSuspiciousActivity();
+      setSuspiciousUsers(response?.data?.suspiciousUsers || []);
+      setLastScan(new Date());
+      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load suspicious activity");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const highFrequencyCount = suspiciousUsers.filter(
     (user) => user.reason === "High frequency",
   ).length;
@@ -45,10 +66,14 @@ const SuspiciousUsers = () => {
           </p>
         </div>
 
-        {/* <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-5 py-3 rounded-xl transition w-fit">
-          <RefreshCcw className="w-5 h-5" />
+        <button
+          onClick={handleRefresh}
+          disabled={loading}
+          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed px-5 py-3 rounded-xl transition w-fit"
+        >
+          <RefreshCcw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
           Refresh Data
-        </button> */}
+        </button>
       </div>
       {/* Top Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6 mb-10">

@@ -1,4 +1,10 @@
-import { Activity, Clock3, TrendingUp, UserCircle2 } from "lucide-react";
+import {
+  Activity,
+  Clock3,
+  RefreshCcw,
+  TrendingUp,
+  UserCircle2,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { fetchStats } from "../api/activityApi";
 
@@ -23,6 +29,20 @@ const Stats = () => {
     };
     fetchStatsData();
   }, []);
+
+  const handleRefresh = async () => {
+    try {
+      setLoading(true);
+      const response = await fetchStats();
+      setStats(response?.data || null);
+      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load activity stats");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const actionsPerMinute = stats?.actionsPerMinute || [];
 
@@ -57,10 +77,14 @@ const Stats = () => {
           </p>
         </div>
 
-        {/* <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-5 py-3 rounded-xl transition">
-          <RefreshCcw className="w-5 h-5" />
+        <button
+          onClick={handleRefresh}
+          disabled={loading}
+          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed px-5 py-3 rounded-xl transition"
+        >
+          <RefreshCcw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
           Refresh Stats
-        </button> */}
+        </button>
       </div>
 
       {/* Top Cards */}

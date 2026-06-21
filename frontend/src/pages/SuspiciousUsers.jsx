@@ -129,7 +129,8 @@ const SuspiciousUsers = () => {
           <table className="w-full text-left">
             <thead>
               <tr className="text-gray-400 text-sm border-b border-gray-800">
-                <th className="py-3">User ID</th>
+                <th className="py-3">Name</th>
+                <th className="py-3">Email</th>
                 <th className="py-3">Reason</th>
                 <th className="py-3">Count</th>
               </tr>
@@ -140,7 +141,8 @@ const SuspiciousUsers = () => {
                   key={`${user.userId}-${user.reason}-${index}`}
                   className="border-b border-gray-800/50"
                 >
-                  <td className="py-3 font-mono text-sm">{user.userId}</td>
+                  <td className="py-3">{user.name}</td>
+                  <td className="py-3 text-gray-400 text-sm">{user.email}</td>
                   <td className="py-3">
                     <span
                       className={`px-3 py-1 rounded-full text-xs ${

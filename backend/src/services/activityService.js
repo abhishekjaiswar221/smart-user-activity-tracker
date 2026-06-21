@@ -80,9 +80,22 @@ export async function detectSuspiciousActivityService() {
       },
     },
     {
+      $lookup: {
+        from: "users",
+        localField: "_id",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    {
+      $unwind: "$user",
+    },
+    {
       $project: {
         _id: 0,
         userId: "$_id",
+        name: "$user.name",
+        email: "$user.email",
         reason: "High frequency",
         count: 1,
       },
@@ -123,9 +136,22 @@ export async function detectSuspiciousActivityService() {
       },
     },
     {
+      $lookup: {
+        from: "users",
+        localField: "userId",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    {
+      $unwind: "$user",
+    },
+    {
       $project: {
         _id: 0,
         userId: 1,
+        name: "$user.name",
+        email: "$user.email",
         reason: "Multiple IPs",
         count: "$ipCount",
       },

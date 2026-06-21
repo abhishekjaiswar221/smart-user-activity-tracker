@@ -8,39 +8,52 @@ import Dashboard from "./pages/Dashboard";
 import SuspiciousUsers from "./pages/SuspiciousUsers";
 import Stats from "./pages/Stats";
 import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
 
 const routes = createBrowserRouter([
   {
-    Component: AuthLayout,
+    Component: PublicRoute,
     children: [
       {
-        index: true,
-        Component: Register,
-      },
-      {
-        path: "login",
-        Component: Login,
+        Component: AuthLayout,
+        children: [
+          {
+            index: true,
+            Component: Register,
+          },
+          {
+            path: "login",
+            Component: Login,
+          },
+        ],
       },
     ],
   },
   {
-    Component: AppLayout,
+    Component: ProtectedRoute,
     children: [
       {
-        path: "dashboard",
-        Component: Dashboard,
-      },
-      {
-        path: "activity",
-        Component: ActivitySimulator,
-      },
-      {
-        path: "stats",
-        Component: Stats,
-      },
-      {
-        path: "suspicious",
-        Component: SuspiciousUsers,
+        Component: AppLayout,
+        children: [
+          {
+            path: "dashboard",
+            Component: Dashboard,
+          },
+          {
+            path: "activity",
+            Component: ActivitySimulator,
+          },
+          {
+            path: "stats",
+            Component: Stats,
+          },
+          {
+            path: "suspicious",
+            Component: SuspiciousUsers,
+          },
+        ],
       },
     ],
   },
@@ -48,10 +61,10 @@ const routes = createBrowserRouter([
 
 const App = () => {
   return (
-    <>
+    <AuthProvider>
       <Toaster position="top-right" reverseOrder={false} />
       <RouterProvider router={routes} />
-    </>
+    </AuthProvider>
   );
 };
 

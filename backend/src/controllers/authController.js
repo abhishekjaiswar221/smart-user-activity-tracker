@@ -1,4 +1,5 @@
 import {
+  getCurrentUserService,
   loginUserService,
   registerUserService,
 } from "../services/authService.js";
@@ -73,6 +74,24 @@ export async function loginUser(req, res) {
     console.error("Error in loginUser controller:", error);
 
     return res.status(401).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+export async function getCurrentUser(req, res) {
+  try {
+    const user = await getCurrentUserService(req.user.id);
+
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.error("Error in getCurrentUser controller:", error);
+
+    return res.status(404).json({
       success: false,
       message: error.message,
     });

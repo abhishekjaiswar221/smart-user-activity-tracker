@@ -3,9 +3,11 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { loginUser } from "../../api/authApi";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -16,6 +18,7 @@ const Login = () => {
       const response = await loginUser(Object.fromEntries(formData));
 
       if (response?.success) {
+        setUser(response.user);
         navigate("/dashboard");
         toast.success("User logged in successfully!");
       }

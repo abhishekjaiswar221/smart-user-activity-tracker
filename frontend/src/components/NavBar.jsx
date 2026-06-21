@@ -2,15 +2,18 @@ import { LogOut, ShieldCheck, UserCircle2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { logoutUser } from "../api/authApi";
+import { useAuth } from "../context/AuthContext";
 
 const NavBar = () => {
   const navigate = useNavigate();
+  const { user, setUser } = useAuth();
 
   const handleLogout = async () => {
     try {
       const response = await logoutUser();
 
       if (response?.success) {
+        setUser(null);
         navigate("/login");
         toast.success("User logged out successfully!");
       }
@@ -43,7 +46,9 @@ const NavBar = () => {
           <div className="hidden md:flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-xl border border-gray-700">
             <UserCircle2 className="w-5 h-5 text-indigo-400" />
 
-            <span className="text-sm text-gray-300">Welcome, User</span>
+            <span className="text-sm text-gray-300">
+              Welcome, {user?.name || "User"}
+            </span>
           </div>
 
           <button

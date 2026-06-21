@@ -38,6 +38,20 @@ export async function registerUserService({ name, email, password }) {
   };
 }
 
+export async function getCurrentUserService(userId) {
+  const user = await User.findById(userId).select("name email");
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  return {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+  };
+}
+
 export async function loginUserService({ email, password }) {
   const user = await User.findOne({ email });
 
